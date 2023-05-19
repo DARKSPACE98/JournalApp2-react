@@ -1,12 +1,27 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { Google } from '@mui/icons-material';
 import { Button, Grid, Link, TextField, Typography } from "@mui/material";
 import { AuthLayout } from '../layout/AuthLayout';
+import { useForm } from '../../hooks/useForm';
+
+const formData ={
+  email: 'enrique@google.com',
+  password: '123456',
+  displayName: 'Enrique Barraza',
+}
+
 
 export const RegisterPage = () => {
+
+  const {displayName, email, password, onInputChange, formState} = useForm(formData);
+
+  const onSubmit = ( event ) => {
+    event.preventDefault();
+    console.log({formState})
+  }
+
   return (
     <AuthLayout title="Crear Cuenta">
-      <form>
+      <form onSubmit={ onSubmit }>
           <Grid container>
             <Grid item xs={ 12 } sx={{ mt:2 }}>
               <TextField 
@@ -14,6 +29,9 @@ export const RegisterPage = () => {
               type="text" 
               placeholder="Enrique Barraza"
               fullWidth 
+              name="displayName"
+              value={ displayName }
+              onChange={ onInputChange }
             />
             </Grid>
             <Grid item xs={ 12 } sx={{ mt:2 }}>
@@ -21,7 +39,10 @@ export const RegisterPage = () => {
               label="Correo" 
               type="email" 
               placeholder="cuenta@google.com"
-              fullWidth 
+              fullWidth
+              name="email"
+              value={ email }
+              onChange={ onInputChange }
             />
             </Grid>
             <Grid item xs={ 12 } sx={{ mt:2 }}>
@@ -30,11 +51,19 @@ export const RegisterPage = () => {
               type="password" 
               placeholder="contraseña"
               fullWidth 
+              name="password"
+              value={ password }
+              onChange={ onInputChange }
             />
             </Grid>
             <Grid container spacing={ 2 } sx={{ mb: 2 }}>
               <Grid item xs={ 12 }>
-                <Button variant="contained" fullWidth sx={{mt: 1}}>
+                <Button
+                type="submit" 
+                variant="contained" 
+                fullWidth 
+                sx={{mt: 1}}
+                >
                   Crear Cuenta
                 </Button>
               </Grid>
