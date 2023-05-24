@@ -52,3 +52,10 @@ export const registerUserWithEmailPassword = async({ email, password, displayNam
             return { ok:false, errorMessage: error.message }
     }
 }
+
+
+export const loginWithEmailPassword = () => {
+    // signInWithEmailAndPassword
+    // ese update profile de arriba no se ocupa
+
+}
