@@ -1,38 +1,48 @@
 import { Link as RouterLink } from 'react-router-dom';
 import { Google } from '@mui/icons-material';
-import { Button, Grid, Link, TextField, Typography } from "@mui/material";
+import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material";
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkingCredentials, startGoogleSignIn } from '../../strore/auth';
-import { useMemo } from 'react';
+import { checkingCredentials, startGoogleSignIn, startLoginWithEmailPassword } from '../../strore/auth';
+import { useMemo, useState } from 'react';
+
 
 export const LoginPage = () => {
   
-  const { status } = useSelector ( state => state.auth );
+  const { status, errorMessage } = useSelector ( state => state.auth );
+ /* const [ formSubmitted, setFormSubmitted] = useState(false) */
+  
 
   const dispatch = useDispatch();
   const {email, password, onInputChange} = useForm({
-      email: 'enrique@google.com',
-      password: '123456'
-  });
+        email: '',
+        password: '',
+        
+      }
+    );
 
   const isAuthenticating = useMemo( () => status === 'checking', [status]);
 
- /*  const {} = useSelector ( state => state.auth ) */
-
   const onSubmit = ( event ) => {
     event.preventDefault();
-
+    //setFormSubmitted(true)
    // console.log( {email , password} )
    // Esta no es la accion a despachar
-    dispatch(checkingCredentials());
+    dispatch(startLoginWithEmailPassword({email, password}));
   }
 
   const onGoogleSignIn = () =>{
     console.log('onGoogleSignIn')
     dispatch( startGoogleSignIn());
   }
+
+/*   const onEmailPasswordSignIn = (event) =>{
+    event.preventDefault();
+    setFormSubmitted(true)
+    console.log('onEmailPasswordSingIn')
+    dispatch( startLoginWithEmailPassword());
+  } */
 
   return (
     <AuthLayout title="Login">
@@ -47,6 +57,8 @@ export const LoginPage = () => {
               name="email"
               value={ email }
               onChange={ onInputChange }
+             /*  error={ !!email && formSubmitted }
+              helperText={ emailValid } */
             />
             </Grid>
             <Grid item xs={ 12 } sx={{ mt:2 }}>
@@ -58,16 +70,31 @@ export const LoginPage = () => {
               name="password"
               value={ password }
               onChange={ onInputChange }
+              /* error={ !!password && formSubmitted }
+              helperText={ passwordValid } */
             />
+
+            <Grid container sx={{ mb: 2, mt: 1 }}>
+            <Grid
+              item 
+              xs={ 12 }
+              display={ !!errorMessage ? '': 'none'}
+              >
+                <Alert severity='error'>{ errorMessage }</Alert>
+              </Grid>
+              </Grid>
+
             </Grid>
             <Grid container spacing={ 2 } sx={{ mb: 2 }}>
-              <Grid item xs={ 12 } sm={ 6 }>
+              <Grid item 
+              xs={ 12 } sm={ 6 }>
                 <Button 
                 disabled={ isAuthenticating }
                 type="submit" 
                 variant="contained" 
                 fullWidth 
                 sx={{mt: 1}}
+               /*  onClick={ onEmailPasswordSignIn } */
                 >
                   Login
                 </Button>
@@ -79,7 +106,7 @@ export const LoginPage = () => {
                 fullWidth 
                 sx={{mt: 1}}
                 onClick={ onGoogleSignIn }
-                >
+                  >
                   <Google />
                 </Button>
               </Grid>
