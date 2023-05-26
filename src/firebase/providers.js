@@ -75,3 +75,9 @@ export const loginWithEmailPassword = async ({ email, password }) => {
     }
     // ese update profile de arriba no se ocupa
 }
+
+export  const logoutFirebase = async() => {
+
+    return await FirebaseAuth.signOut();
+
+}

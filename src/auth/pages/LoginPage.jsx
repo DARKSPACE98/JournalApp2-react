@@ -11,8 +11,6 @@ import { useMemo, useState } from 'react';
 export const LoginPage = () => {
   
   const { status, errorMessage } = useSelector ( state => state.auth );
- /* const [ formSubmitted, setFormSubmitted] = useState(false) */
-  
 
   const dispatch = useDispatch();
   const {email, password, onInputChange} = useForm({
@@ -26,9 +24,6 @@ export const LoginPage = () => {
 
   const onSubmit = ( event ) => {
     event.preventDefault();
-    //setFormSubmitted(true)
-   // console.log( {email , password} )
-   // Esta no es la accion a despachar
     dispatch(startLoginWithEmailPassword({email, password}));
   }
 
@@ -37,16 +32,9 @@ export const LoginPage = () => {
     dispatch( startGoogleSignIn());
   }
 
-/*   const onEmailPasswordSignIn = (event) =>{
-    event.preventDefault();
-    setFormSubmitted(true)
-    console.log('onEmailPasswordSingIn')
-    dispatch( startLoginWithEmailPassword());
-  } */
-
   return (
     <AuthLayout title="Login">
-      <form onSubmit={ onSubmit }>
+      <form onSubmit={ onSubmit } className="animate__animated animate__fadeIn animate__faster">
           <Grid container>
             <Grid item xs={ 12 } sx={{ mt:2 }}>
               <TextField 
@@ -57,8 +45,7 @@ export const LoginPage = () => {
               name="email"
               value={ email }
               onChange={ onInputChange }
-             /*  error={ !!email && formSubmitted }
-              helperText={ emailValid } */
+            
             />
             </Grid>
             <Grid item xs={ 12 } sx={{ mt:2 }}>
@@ -70,8 +57,7 @@ export const LoginPage = () => {
               name="password"
               value={ password }
               onChange={ onInputChange }
-              /* error={ !!password && formSubmitted }
-              helperText={ passwordValid } */
+            
             />
 
             <Grid container sx={{ mb: 2, mt: 1 }}>
@@ -94,7 +80,7 @@ export const LoginPage = () => {
                 variant="contained" 
                 fullWidth 
                 sx={{mt: 1}}
-               /*  onClick={ onEmailPasswordSignIn } */
+               
                 >
                   Login
                 </Button>
